@@ -28,7 +28,7 @@ export default function LoginPanel({ setToken }: { setToken: (token: string) => 
 
   return (
     <div className="max-w-md mx-auto pt-16 px-4 transition-all duration-300 transform hover:scale-[1.01]">
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+      <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg overflow-hidden border border-gray-100">
         <div className="bg-indigo-600 text-white py-4 px-6 text-xl font-semibold flex items-center space-x-2">
           <span className="material-symbols-outlined">shield</span>
           <span>Admin Login</span>

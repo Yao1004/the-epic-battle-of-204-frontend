@@ -34,7 +34,7 @@ export default function DomainsTable({ token }: { token: string }) {
   }, [token]);
 
   const handleDelete = async (domain: string, list_type: string) => {
-    if (!confirm(`確定刪除 "${domain}" (${list_type})?`)) return;
+    if (!confirm(`Are you sure to delete "${domain}" (${list_type})?`)) return;
     try {
       await deleteDomain(token, domain, list_type);
       setMsg(`Deleted: ${domain} (${list_type})`);

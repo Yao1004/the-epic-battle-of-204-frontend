@@ -12,10 +12,10 @@ export default function Tabs({ tabs, active, onChange }: TabProps) {
         <button
           key={tab.value}
           className={
-            "tab-btn px-4 py-2 rounded-t-lg font-semibold transition-all " +
+            "tab-btn px-4 py-2 rounded font-semibold transition-all " +
             (active === tab.value
               ? "bg-indigo-600 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-indigo-100")
+              : "bg-gray-200 text-gray-700 hover:bg-indigo-100 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700")
           }
           onClick={() => onChange(tab.value)}
         >
