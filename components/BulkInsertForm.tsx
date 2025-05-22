@@ -28,17 +28,22 @@ export default function BulkInsertForm({ token }: { token: string }) {
         await addDomain(token, domain, listType);
         ok++;
       } catch (e) {
+        let code = 0;
         let msg = "";
         if (typeof e === "object" && e && "response" in e) {
-          const err = e as AxiosErrorShape;
+          const err = e as AxiosErrorShape & { response?: { status?: number } };
+          code = err.response?.status || 0;
           msg = err.response?.data?.detail || err.message || "";
-        } else if (e instanceof Error) {
-          msg = e.message;
         }
-        if (msg.includes("already in the list") || msg.includes("UNIQUE constraint")) {
+        if (code === 404) {
           dup++;
+        } else if (code === 422) {
+          fail++;
+          if (fail === 1) setResult(<span className="text-red-500">Validation error: {msg}</span>);
         } else {
           fail++;
+          console.error("Error adding domain:", domain, e);
+          if (fail === 1) setResult(<span className="text-red-500">Internal error: {msg}</span>);
         }
       }
     }
@@ -47,7 +52,22 @@ export default function BulkInsertForm({ token }: { token: string }) {
     if (fail) summary = <>{summary}, <span className="text-red-500 font-bold">{fail} failed</span></>;
     setResult(summary);
     setDomains("");
-    setListType("blacklist");
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "text/plain") {
+      setResult(<span className="text-red-500">Only .txt files are supported.</span>);
+      return;
+    }
+    try {
+      const text = await file.text();
+      setDomains((prev) => prev + (prev && !prev.endsWith("\n") ? "\n" : "") + text.trim());
+      setResult("");
+    } catch {
+      setResult(<span className="text-red-500">Failed to read file.</span>);
+    }
   };
 
   return (
@@ -57,17 +77,27 @@ export default function BulkInsertForm({ token }: { token: string }) {
         <span>Bulk Domain Upload</span>
       </div>
       <form onSubmit={handleSubmit} className="p-5 space-y-4 h-full flex flex-col">
-        <div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-400">Domain Names (one per line)</label>
-          <textarea
-            rows={6}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all min-h-[100px]"
-            placeholder={`example1.com\nexample2.com\nexample3.com`}
-            required
-            value={domains}
-            onChange={e => setDomains(e.target.value)}
-          ></textarea>
+          <label className="inline-flex items-center cursor-pointer text-cyan-700 hover:text-cyan-900 text-sm font-medium ml-auto">
+            <span className="material-symbols-outlined mr-1 text-base">attach_file</span>
+            <span>Upload .txt</span>
+            <input
+              type="file"
+              accept=".txt"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+          </label>
         </div>
+        <textarea
+          rows={6}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all min-h-[100px]"
+          placeholder={`example1.com\nexample2.com\nexample3.com`}
+          required
+          value={domains}
+          onChange={e => setDomains(e.target.value)}
+        ></textarea>
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-400">List Type</label>
           <div className="relative">

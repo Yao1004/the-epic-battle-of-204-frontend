@@ -20,7 +20,6 @@ export default function AddDomainForm({ token }: { token: string }) {
           </span>
         );
         setDomain("");
-        setListType("blacklist");
       } else if (res.status === 409) {
         setMsg(<span className="text-yellow-600">This domain is already in the list.</span>);
       } else if (res.status === 422) {

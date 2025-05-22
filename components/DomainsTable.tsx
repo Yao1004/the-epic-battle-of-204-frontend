@@ -2,17 +2,60 @@
 import { useEffect, useState } from "react";
 import { fetchDomains, deleteDomain } from "@/lib/api";
 import { AxiosErrorShape, type Domain } from "@/lib/types";
+import { DomainListSection } from "@/components/DomainListSection";
+
+function ConfirmModal({ open, onConfirm, onCancel, domain, listType }: {
+  open: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  domain: string;
+  listType: string;
+}) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="bg-white rounded-xl shadow-lg p-6 min-w-[300px]">
+        <div className="mb-4 text-gray-800 text-lg font-semibold">Confirm Deletion</div>
+        <div className="mb-6 text-gray-600 text-sm">
+          Are you sure to delete <span className="font-bold">{domain}</span> from <span className="font-bold">{listType}</span>?
+        </div>
+        <div className="flex justify-end space-x-2">
+          <button
+            className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+            onClick={onConfirm}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function DomainsTable({ token }: { token: string }) {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const [search, setSearch] = useState(["", "", "", ""]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<{ source: string, domain: string; listType: string } | null>(null);
 
   const refresh = async () => {
     setLoading(true);
     setMsg("");
     try {
-      const data = await fetchDomains(token, "manual", "all");
+      const data = [
+        await fetchDomains(token, "manual", "whitelist"),
+        await fetchDomains(token, "manual", "blacklist"),
+        await fetchDomains(token, "llm", "whitelist"),
+        await fetchDomains(token, "llm", "blacklist"),
+      ];
       setDomains(data);
     } catch (e) {
       let msg = "";
@@ -33,11 +76,17 @@ export default function DomainsTable({ token }: { token: string }) {
     // eslint-disable-next-line
   }, [token]);
 
-  const handleDelete = async (domain: string, list_type: string) => {
-    if (!confirm(`Are you sure to delete "${domain}" (${list_type})?`)) return;
+  const handleDelete = (source: string, domain: string, list_type: string) => {
+    setPendingDelete({ source, domain, listType: list_type });
+    setConfirmOpen(true);
+  };
+
+  const doDelete = async () => {
+    if (!pendingDelete) return;
+    setConfirmOpen(false);
     try {
-      await deleteDomain(token, domain, list_type);
-      setMsg(`Deleted: ${domain} (${list_type})`);
+      await deleteDomain(token, pendingDelete.source, pendingDelete.domain, pendingDelete.listType);
+      setMsg(`Deleted: ${pendingDelete.domain} (${pendingDelete.listType})`);
       refresh();
     } catch (e) {
       let msg = "";
@@ -48,6 +97,8 @@ export default function DomainsTable({ token }: { token: string }) {
         msg = e.message;
       }
       setMsg("Delete failed: " + msg);
+    } finally {
+      setPendingDelete(null);
     }
   };
 
@@ -67,39 +118,57 @@ export default function DomainsTable({ token }: { token: string }) {
         ) : !domains?.length ? (
           <span className="text-gray-400">No records.</span>
         ) : (
-          <table className="table-auto w-full text-left text-gray-800">
-            <thead>
-              <tr>
-                <th className="pb-2">Domain</th>
-                <th className="pb-2">List Type</th>
-                <th className="pb-2">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {domains.map((row) => (
-                <tr
-                  key={row.domain + row.list_type}
-                  className="border-t border-gray-100 hover:bg-gray-50"
-                >
-                  <td className="py-2">{row.domain}</td>
-                  <td className="py-2">
-                    {row.list_type === "blacklist" ? "Blacklist" : "Whitelist"}
-                  </td>
-                  <td className="py-2">
-                    <button
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-xs font-semibold flex items-center space-x-1"
-                      onClick={() => handleDelete(row.domain, row.list_type)}
-                    >
-                      <span className="material-symbols-outlined text-base">delete</span>
-                      <span>Delete</span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Left: Whitelist */}
+            <div className="flex flex-col h-full">
+              <div className="font-bold text-gray-600 mb-2 text-lg">Whitelist</div>
+              <DomainListSection
+                title="Manual"
+                data={Array.isArray(domains[0]) ? domains[0] : []}
+                searchValue={search[0]}
+                setSearchValue={v => setSearch([v, search[1], search[2], search[3]])}
+                onDelete={handleDelete}
+                source="manual"
+              />
+              <DomainListSection
+                title="LLM"
+                data={Array.isArray(domains[2]) ? domains[2] : []}
+                searchValue={search[2]}
+                setSearchValue={v => setSearch([search[0], search[1], v, search[3]])}
+                onDelete={handleDelete}
+                source="llm"
+              />
+            </div>
+            {/* Right: Blacklist */}
+            <div className="flex flex-col h-full">
+              <div className="font-bold text-gray-600 mb-2 text-lg">Blacklist</div>
+              <DomainListSection
+                title="Manual"
+                data={Array.isArray(domains[1]) ? domains[1] : []}
+                searchValue={search[1]}
+                setSearchValue={v => setSearch([search[0], v, search[2], search[3]])}
+                onDelete={handleDelete}
+                source="manual"
+              />
+              <DomainListSection
+                title="LLM"
+                data={Array.isArray(domains[3]) ? domains[3] : []}
+                searchValue={search[3]}
+                setSearchValue={v => setSearch([search[0], search[1], search[2], v])}
+                onDelete={handleDelete}
+                source="llm"
+              />
+            </div>
+          </div>
         )}
       </div>
+      <ConfirmModal
+        open={confirmOpen}
+        onConfirm={doDelete}
+        onCancel={() => { setConfirmOpen(false); setPendingDelete(null); }}
+        domain={pendingDelete?.domain || ""}
+        listType={pendingDelete?.listType || ""}
+      />
     </div>
   );
 }
