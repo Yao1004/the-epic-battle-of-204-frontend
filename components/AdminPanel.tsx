@@ -34,25 +34,25 @@ export default function AdminPanel({
       </nav>
       <Tabs
         tabs={[
-          { label: "Domain Management", value: "domains" },
-          { label: "Bulk Upload", value: "bulk" },
+          { label: "View Domain List", value: "view" },
+          { label: "Update Domain List", value: "update" },
           { label: "Domain Statistics", value: "stats" },
         ]}
         active={tab}
         onChange={setTab}
       />
       <div className="my-8">
-        {tab === "domains" && (
+        {tab === "view" && <DomainsTable token={token} />}
+        {tab === "update" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              <DomainsTable token={token} />
-            </div>
-            <div className="md:col-span-1">
               <AddDomainForm token={token} />
             </div>
+            <div className="md:col-span-1">
+              <BulkInsertForm token={token} />
+            </div>
           </div>
-        )}
-        {tab === "bulk" && <BulkInsertForm token={token} />}
+        )}  
         {tab === "stats" && <StatsPanel />}
       </div>
     </div>
