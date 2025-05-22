@@ -1,8 +1,8 @@
 "use client";
 export default function StatsPanel() {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mb-10 max-w-3xl mx-auto mt-8">
-      <div className="bg-gradient-to-r from-indigo-700 to-purple-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-3xl">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mb-10 max-w-3xl mx-auto mt-8">
+      <div className="bg-gradient-to-r from-indigo-700 to-purple-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
       </div>
@@ -45,7 +45,7 @@ export default function StatsPanel() {
         {/* Recent Activity */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <div className="text-gray-700 font-medium flex items-center">
+            <div className="text-gray-700 dark:text-gray-400 font-medium flex items-center">
               <span className="material-symbols-outlined mr-1 text-indigo-600">calendar_month</span>
               Recent Activity
             </div>

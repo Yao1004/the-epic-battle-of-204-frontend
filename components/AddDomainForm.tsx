@@ -41,14 +41,14 @@ export default function AddDomainForm({ token }: { token: string }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
       <div className="bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
         <span className="material-symbols-outlined">playlist_add</span>
         <span>Add to List</span>
       </div>
       <form onSubmit={handleSubmit} className="p-5 space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Domain Name</label>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-400">Domain Name</label>
           <div className="relative">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
               <span className="material-symbols-outlined text-lg">public</span>
@@ -63,7 +63,7 @@ export default function AddDomainForm({ token }: { token: string }) {
           </div>
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">List Type</label>
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-400">List Type</label>
           <div className="relative">
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
               <span className="material-symbols-outlined text-lg">list_alt</span>
