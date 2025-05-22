@@ -1,35 +1,51 @@
 "use client";
 import { type Domain } from "@/lib/types";
 import { useEffect, useState } from "react";
+import { fetchDomains } from "@/lib/api";
 
 export function DomainListSection({
   title,
-  data,
   searchValue,
   setSearchValue,
   onDelete,
-  source
+  source,
+  token,
+  listType
 }: {
   title: string;
-  data: {
-    domains: Domain[];
-    meta: {
-      total: number;
-      offset: number;
-      limit: number;
-    }
-  };
   searchValue: string;
   setSearchValue: (v: string) => void;
   onDelete: (source: string, domain: string, list_type: string) => void;
   source: string;
+  token: string;
+  listType: string;
 }) {
   const [page, setPage] = useState(1);
+  const [domains, setDomains] = useState<Domain[]>([]);
+  const [meta, setMeta] = useState({ total: 0, offset: 0, limit: 0 });
+  const [loading, setLoading] = useState(false);
   const pageSize = 5;
-  // Filtered domains
-  const filtered = data.domains.filter(row => row.domain.includes(searchValue));
-  const pageCount = Math.max(1, Math.ceil(data.meta.total / pageSize));
-  const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
+
+  useEffect(() => {
+    async function fetchPage() {
+      setLoading(true);
+      try {
+        const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize);
+        const allDomains = res.domains || [];
+        setMeta(res.meta || { total: 0, offset: 0, limit: 0 });
+        setDomains(allDomains);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPage();
+  }, [token, source, listType, page]);
+
+  // Filtered and paged domains
+  const filtered = searchValue.trim()
+    ? domains.filter(row => row.domain.includes(searchValue))
+    : domains;
+  const pageCount = Math.max(1, Math.ceil(meta.total / pageSize));
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
     pages = Array.from({ length: pageCount }, (_, i) => i + 1);
@@ -43,8 +59,7 @@ export function DomainListSection({
     }
   }
 
-  // Reset to first page on search change
-  useEffect(() => { setPage(1); }, [searchValue]);
+  useEffect(() => { setPage(1); }, [searchValue, token, source, listType]);
 
   return (
     <div className="flex-1 flex flex-col mb-6">
@@ -56,13 +71,15 @@ export function DomainListSection({
         value={searchValue}
         onChange={e => setSearchValue(e.target.value)}
       />
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="text-gray-400 text-sm mb-2">Loading…</div>
+      ) : filtered.length === 0 ? (
         <div className="text-gray-400 text-sm mb-2">No records.</div>
       ) : (
         <>
         <div className="overflow-y-auto max-h-56">
           <ul className="divide-y divide-gray-100">
-            {paged.map((row) => (
+            {filtered.map((row) => (
               <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 group flex items-center">
                 <span>{row.domain}</span>
                 <button

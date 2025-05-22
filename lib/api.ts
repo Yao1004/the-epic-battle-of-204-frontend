@@ -13,8 +13,7 @@ export async function login(username: string, password: string) {
 }
 
 export async function fetchDomains(token: string, source: string, list_type: string,
-  offset = 0, limit = 100 
-) {
+  offset: number, limit: number) { 
   const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
     headers: { Authorization: "Bearer " + token },
     params: { offset, limit },

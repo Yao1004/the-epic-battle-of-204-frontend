@@ -65,12 +65,6 @@ export default function StatsPanel({ token }: { token: string }) {
     load();
   }, [token, page, search]);
 
-  const handleRefresh = () => {
-    setPage(1);
-    setSearch("");
-    setError("");
-  };
-
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
@@ -90,14 +84,6 @@ export default function StatsPanel({ token }: { token: string }) {
       <div className="bg-gradient-to-r from-indigo-700 to-purple-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
-        <button
-          className="ml-auto flex items-center space-x-1 bg-white/20 hover:bg-white/30 text-white rounded-lg px-3 py-1.5 font-medium transition-all duration-200 hover:shadow-sm text-sm"
-          onClick={handleRefresh}
-          title="Refresh"
-        >
-          <span className="material-symbols-outlined text-base">refresh</span>
-          <span>Refresh</span>
-        </button>
       </div>
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row gap-5 mb-6">
