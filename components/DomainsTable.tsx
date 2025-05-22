@@ -12,7 +12,7 @@ export default function DomainsTable({ token }: { token: string }) {
     setLoading(true);
     setMsg("");
     try {
-      const data = await fetchDomains(token);
+      const data = await fetchDomains(token, "manual", "all");
       setDomains(data);
     } catch (e) {
       let msg = "";

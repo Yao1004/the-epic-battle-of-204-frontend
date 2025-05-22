@@ -12,21 +12,27 @@ export async function login(username: string, password: string) {
   return res.data.access_token || res.data.token;
 }
 
-export async function fetchDomains(token: string) {
-  const res = await axios.get(`${API_BASE}/api/domains`, {
+export async function fetchDomains(token: string, source: string, list_type: string) {
+  const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}`, {
     headers: { Authorization: "Bearer " + token },
   });
   return res.data;
 }
 
 export async function addDomain(token: string, domain: string, list_type: string) {
-  await axios.post(
-    `${API_BASE}/api/lists`,
-    { domain, list_type },
-    {
-      headers: { Authorization: "Bearer " + token },
-    }
-  );
+  try {
+    const res = await axios.post(
+      `${API_BASE}/api/lists/manual/${list_type}/domains`,
+      { domain },
+      {
+        headers: { Authorization: "Bearer " + token },
+        validateStatus: () => true, // Always resolve, handle status manually
+      }
+    );
+    return res;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function deleteDomain(token: string, domain: string, list_type: string) {

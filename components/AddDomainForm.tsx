@@ -12,14 +12,22 @@ export default function AddDomainForm({ token }: { token: string }) {
     e.preventDefault();
     setMsg("");
     try {
-      await addDomain(token, domain, listType);
-      setMsg(
-        <span className="text-green-600">
-          Added: {domain} ({listType === "blacklist" ? "Blacklist" : "Whitelist"})
-        </span>
-      );
-      setDomain("");
-      setListType("blacklist");
+      const res = await addDomain(token, domain, listType);
+      if (res.status === 201) {
+        setMsg(
+          <span className="text-green-600">
+            Added: {domain} ({listType === "blacklist" ? "Blacklist" : "Whitelist"})
+          </span>
+        );
+        setDomain("");
+        setListType("blacklist");
+      } else if (res.status === 409) {
+        setMsg(<span className="text-yellow-600">This domain is already in the list.</span>);
+      } else if (res.status === 422) {
+        setMsg(<span className="text-red-500">Validation error: {res.data?.detail || "Invalid domain"}</span>);
+      } else {
+        setMsg(<span className="text-red-500">Internal error: {res.data?.detail || res.statusText}</span>);
+      }
     } catch (e) {
       let msg = "";
       if (typeof e === "object" && e && "response" in e) {
@@ -27,9 +35,6 @@ export default function AddDomainForm({ token }: { token: string }) {
         msg = err.response?.data?.detail || err.message || "";
       } else if (e instanceof Error) {
         msg = e.message;
-      }
-      if (msg.includes("UNIQUE constraint failed")) {
-        msg = "This domain is already in the list.";
       }
       setMsg(<span className="text-red-500">Add failed: {msg}</span>);
     }
