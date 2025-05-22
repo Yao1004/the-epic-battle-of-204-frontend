@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { addDomain } from "@/lib/api";
+import { AxiosErrorShape } from "@/lib/types";
 
 export default function AddDomainForm({ token }: { token: string }) {
   const [domain, setDomain] = useState("");
@@ -13,12 +14,20 @@ export default function AddDomainForm({ token }: { token: string }) {
     try {
       await addDomain(token, domain, listType);
       setMsg(
-        <span className="text-green-600">Added: {domain} ({listType === "blacklist" ? "Blacklist" : "Whitelist"})</span>
+        <span className="text-green-600">
+          Added: {domain} ({listType === "blacklist" ? "Blacklist" : "Whitelist"})
+        </span>
       );
       setDomain("");
       setListType("blacklist");
-    } catch (e: any) {
-      let msg = e?.response?.data?.detail || e.message;
+    } catch (e) {
+      let msg = "";
+      if (typeof e === "object" && e && "response" in e) {
+        const err = e as AxiosErrorShape;
+        msg = err.response?.data?.detail || err.message || "";
+      } else if (e instanceof Error) {
+        msg = e.message;
+      }
       if (msg.includes("UNIQUE constraint failed")) {
         msg = "This domain is already in the list.";
       }

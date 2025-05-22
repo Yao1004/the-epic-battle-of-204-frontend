@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { addDomain } from "@/lib/api";
+import { AxiosErrorShape } from "@/lib/types";
 
 export default function BulkInsertForm({ token }: { token: string }) {
   const [domains, setDomains] = useState("");
@@ -26,8 +27,14 @@ export default function BulkInsertForm({ token }: { token: string }) {
       try {
         await addDomain(token, domain, listType);
         ok++;
-      } catch (e: any) {
-        const msg = e?.response?.data?.detail || e.message || "";
+      } catch (e) {
+        let msg = "";
+        if (typeof e === "object" && e && "response" in e) {
+          const err = e as AxiosErrorShape;
+          msg = err.response?.data?.detail || err.message || "";
+        } else if (e instanceof Error) {
+          msg = e.message;
+        }
         if (msg.includes("already in the list") || msg.includes("UNIQUE constraint")) {
           dup++;
         } else {

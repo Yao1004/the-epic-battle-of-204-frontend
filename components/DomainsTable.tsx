@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchDomains, deleteDomain } from "@/lib/api";
+import { AxiosErrorShape, type Domain } from "@/lib/types";
 
 export default function DomainsTable({ token }: { token: string }) {
-  const [domains, setDomains] = useState<any[]>([]);
+  const [domains, setDomains] = useState<Domain[]>([]);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -13,8 +14,15 @@ export default function DomainsTable({ token }: { token: string }) {
     try {
       const data = await fetchDomains(token);
       setDomains(data);
-    } catch (e: any) {
-      setMsg("Failed to fetch: " + (e?.response?.data?.detail || e.message));
+    } catch (e) {
+      let msg = "";
+      if (typeof e === "object" && e && "response" in e) {
+        const err = e as AxiosErrorShape;
+        msg = err.response?.data?.detail || err.message || "";
+      } else if (e instanceof Error) {
+        msg = e.message;
+      }
+      setMsg("Failed to fetch: " + msg);
     } finally {
       setLoading(false);
     }
@@ -31,8 +39,15 @@ export default function DomainsTable({ token }: { token: string }) {
       await deleteDomain(token, domain, list_type);
       setMsg(`Deleted: ${domain} (${list_type})`);
       refresh();
-    } catch (e: any) {
-      setMsg("Delete failed: " + (e?.response?.data?.detail || e.message));
+    } catch (e) {
+      let msg = "";
+      if (typeof e === "object" && e && "response" in e) {
+        const err = e as AxiosErrorShape;
+        msg = err.response?.data?.detail || err.message || "";
+      } else if (e instanceof Error) {
+        msg = e.message;
+      }
+      setMsg("Delete failed: " + msg);
     }
   };
 

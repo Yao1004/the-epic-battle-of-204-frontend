@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { login } from "@/lib/api";
+import { AxiosErrorShape } from "@/lib/types";
 
 export default function LoginPanel({ setToken }: { setToken: (token: string) => void }) {
   const [username, setUsername] = useState("");
@@ -13,10 +14,17 @@ export default function LoginPanel({ setToken }: { setToken: (token: string) => 
       const token = await login(username, password);
       setToken(token);
       localStorage.setItem("token", token);
-    } catch (e: any) {
-      setMsg("Login failed: " + (e?.response?.data?.detail || e.message));
+    } catch (e) {
+      let msg = "";
+      if (typeof e === "object" && e && "response" in e) {
+        const err = e as AxiosErrorShape;
+        msg = err.response?.data?.detail || err.message || "";
+      } else if (e instanceof Error) {
+        msg = e.message;
+      }
+      setMsg("Login failed: " + msg);
     }
-  };
+  }
 
   return (
     <div className="max-w-md mx-auto pt-16 px-4 transition-all duration-300 transform hover:scale-[1.01]">
