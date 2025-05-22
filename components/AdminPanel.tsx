@@ -13,7 +13,7 @@ export default function AdminPanel({
   token: string;
   setToken: (token: string | null) => void;
 }) {
-  const [tab, setTab] = useState("domains");
+  const [tab, setTab] = useState("view");
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <nav className="bg-indigo-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
@@ -53,7 +53,7 @@ export default function AdminPanel({
             </div>
           </div>
         )}  
-        {tab === "stats" && <StatsPanel />}
+        {tab === "stats" && <StatsPanel token={token} />}
       </div>
     </div>
   );

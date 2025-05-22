@@ -12,9 +12,12 @@ export async function login(username: string, password: string) {
   return res.data.access_token || res.data.token;
 }
 
-export async function fetchDomains(token: string, source: string, list_type: string) {
+export async function fetchDomains(token: string, source: string, list_type: string,
+  offset = 0, limit = 100 
+) {
   const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
     headers: { Authorization: "Bearer " + token },
+    params: { offset, limit },
   });
   return res.data;
 }
@@ -40,4 +43,19 @@ export async function deleteDomain(token: string, source: string, domain: string
     headers: { Authorization: "Bearer " + token },
     data: { domain, list_type },
   });
+}
+
+export async function fetchDomainLogs(token: string, offset = 0, limit = 100) {
+  const res = await axios.get(`${API_BASE}/api/domain-logs`, {
+    headers: { Authorization: "Bearer " + token },
+    params: { offset, limit },
+  });
+  return res.data;
+}
+
+export async function fetchListStats(token: string) {
+  const res = await axios.get(`${API_BASE}/api/lists/stats`, {
+    headers: { Authorization: "Bearer " + token },
+  });
+  return res.data;
 }

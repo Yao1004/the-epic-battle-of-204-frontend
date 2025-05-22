@@ -39,7 +39,7 @@ function ConfirmModal({ open, onConfirm, onCancel, domain, listType }: {
 }
 
 export default function DomainsTable({ token }: { token: string }) {
-  const [domains, setDomains] = useState<Domain[]>([]);
+  const [bodies, setBodies] = useState<Array<{ domains: Domain[]; meta: { total: number; offset: number; limit: number } }>>([]);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [search, setSearch] = useState(["", "", "", ""]);
@@ -56,7 +56,8 @@ export default function DomainsTable({ token }: { token: string }) {
         await fetchDomains(token, "llm", "whitelist"),
         await fetchDomains(token, "llm", "blacklist"),
       ];
-      setDomains(data);
+      // Ensure each entry is { domains: Domain[], meta: ... }
+      setBodies(data);
     } catch (e) {
       let msg = "";
       if (typeof e === "object" && e && "response" in e) {
@@ -115,7 +116,7 @@ export default function DomainsTable({ token }: { token: string }) {
       <div className="bg-gray-50 p-4 rounded-lg min-h-[150px]">
         {loading ? (
           <span className="text-gray-400">Loading…</span>
-        ) : !domains?.length ? (
+        ) : !bodies?.length ? (
           <span className="text-gray-400">No records.</span>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -124,7 +125,7 @@ export default function DomainsTable({ token }: { token: string }) {
               <div className="font-bold text-gray-600 mb-2 text-lg">Whitelist</div>
               <DomainListSection
                 title="Manual"
-                data={Array.isArray(domains[0]) ? domains[0] : []}
+                data={bodies[0]}
                 searchValue={search[0]}
                 setSearchValue={v => setSearch([v, search[1], search[2], search[3]])}
                 onDelete={handleDelete}
@@ -132,7 +133,7 @@ export default function DomainsTable({ token }: { token: string }) {
               />
               <DomainListSection
                 title="LLM"
-                data={Array.isArray(domains[2]) ? domains[2] : []}
+                data={bodies[2]}
                 searchValue={search[2]}
                 setSearchValue={v => setSearch([search[0], search[1], v, search[3]])}
                 onDelete={handleDelete}
@@ -144,7 +145,7 @@ export default function DomainsTable({ token }: { token: string }) {
               <div className="font-bold text-gray-600 mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
-                data={Array.isArray(domains[1]) ? domains[1] : []}
+                data={bodies[1]}
                 searchValue={search[1]}
                 setSearchValue={v => setSearch([search[0], v, search[2], search[3]])}
                 onDelete={handleDelete}
@@ -152,7 +153,7 @@ export default function DomainsTable({ token }: { token: string }) {
               />
               <DomainListSection
                 title="LLM"
-                data={Array.isArray(domains[3]) ? domains[3] : []}
+                data={bodies[3]}
                 searchValue={search[3]}
                 setSearchValue={v => setSearch([search[0], search[1], search[2], v])}
                 onDelete={handleDelete}
