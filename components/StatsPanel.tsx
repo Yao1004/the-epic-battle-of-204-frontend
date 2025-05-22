@@ -1,55 +1,43 @@
 "use client";
 export default function StatsPanel() {
   return (
-    <div className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100 mb-10 max-w-3xl mx-auto mt-8">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mb-10 max-w-3xl mx-auto mt-8">
       <div className="bg-gradient-to-r from-indigo-700 to-purple-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-3xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
       </div>
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row gap-5 mb-6">
-          <div className="flex-1 bg-blue-50 rounded-xl flex items-center p-4">
-            <span className="bg-blue-600 text-white p-2 rounded-full mr-3 text-xl">
+          <div className="flex-1 bg-blue-50 rounded-xl flex flex-row items-center justify-center p-4">
+            <span className="bg-blue-600 text-white p-2 rounded-full mr-3 text-xl flex items-center justify-center">
               <span className="material-symbols-outlined">shield</span>
             </span>
-            <div>
-              <div className="text-blue-800 font-bold">
-                Blacklisted
-                <span className="ml-1 text-2xl font-extrabold align-middle">147</span>
-              </div>
-              <div className="flex items-center text-xs text-blue-600 mt-1">
-                <span className="material-symbols-outlined text-green-500 text-base mr-1">trending_up</span>
-                12% increase this week
+            <div className="text-left">
+              <div className="flex flex-row items-center text-blue-800 font-bold text-xl">
+                <span>Blacklisted</span>
+                <span className="ml-2 font-extrabold">{147}</span>
               </div>
             </div>
           </div>
-          <div className="flex-1 bg-green-50 rounded-xl flex items-center p-4">
-            <span className="bg-green-600 text-white p-2 rounded-full mr-3 text-xl">
+          <div className="flex-1 bg-green-50 rounded-xl flex flex-row items-center justify-center p-4">
+            <span className="bg-green-600 text-white p-2 rounded-full mr-3 text-xl flex items-center justify-center">
               <span className="material-symbols-outlined">check_circle</span>
             </span>
-            <div>
-              <div className="text-green-800 font-bold">
-                Whitelisted
-                <span className="ml-1 text-2xl font-extrabold align-middle">93</span>
-              </div>
-              <div className="flex items-center text-xs text-green-600 mt-1">
-                <span className="material-symbols-outlined text-green-500 text-base mr-1">trending_up</span>
-                8% increase this week
+            <div className="text-left">
+              <div className="flex flex-row items-center text-green-800 font-bold text-xl">
+                <span>Whitelisted</span>
+                <span className="ml-2 font-extrabold">{93}</span>
               </div>
             </div>
           </div>
-          <div className="flex-1 bg-purple-50 rounded-xl flex items-center p-4">
-            <span className="bg-purple-600 text-white p-2 rounded-full mr-3 text-xl">
+          <div className="flex-1 bg-purple-50 rounded-xl flex flex-row items-center justify-center p-4">
+            <span className="bg-purple-600 text-white p-2 rounded-full mr-3 text-xl flex items-center justify-center">
               <span className="material-symbols-outlined">pending</span>
             </span>
-            <div>
-              <div className="text-purple-800 font-bold">
-                Pending
-                <span className="ml-1 text-2xl font-extrabold align-middle">24</span>
-              </div>
-              <div className="flex items-center text-xs text-pink-500 mt-1">
-                <span className="material-symbols-outlined text-red-500 text-base mr-1">trending_down</span>
-                3% decrease this week
+            <div className="text-left">
+              <div className="flex flex-row items-center text-purple-800 font-bold text-xl">
+                <span>Pending</span>
+                <span className="ml-2 font-extrabold">{24}</span>
               </div>
             </div>
           </div>
