@@ -34,9 +34,9 @@ export default function AdminPanel({
       </nav>
       <Tabs
         tabs={[
-          { label: "Domain 管理", value: "domains" },
-          { label: "批次上傳", value: "bulk" },
-          { label: "統計", value: "stats" },
+          { label: "Domain Management", value: "domains" },
+          { label: "Bulk Upload", value: "bulk" },
+          { label: "Domain Statistics", value: "stats" },
         ]}
         active={tab}
         onChange={setTab}
