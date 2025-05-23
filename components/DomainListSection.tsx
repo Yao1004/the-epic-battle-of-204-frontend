@@ -1,6 +1,6 @@
 "use client";
 import { type Domain } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { fetchDomains } from "@/lib/api";
 
 export function DomainListSection({
@@ -26,20 +26,22 @@ export function DomainListSection({
   const [loading, setLoading] = useState(false);
   const pageSize = 5;
 
-  useEffect(() => {
-    async function fetchPage() {
-      setLoading(true);
-      try {
-        const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize);
-        const allDomains = res.domains || [];
-        setMeta(res.meta || { total: 0, offset: 0, limit: 0 });
-        setDomains(allDomains);
-      } finally {
-        setLoading(false);
-      }
+  // Memoize fetchPage to avoid useEffect dependency warning
+  const fetchPage = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize);
+      const allDomains = res.domains || [];
+      setMeta(res.meta || { total: 0, offset: 0, limit: 0 });
+      setDomains(allDomains);
+    } finally {
+      setLoading(false);
     }
+  }, [token, source, listType, page, pageSize]);
+
+  useEffect(() => {
     fetchPage();
-  }, [token, source, listType, page]);
+  }, [fetchPage]);
 
   // Filtered and paged domains
   const filtered = searchValue.trim()
@@ -59,7 +61,43 @@ export function DomainListSection({
     }
   }
 
-  useEffect(() => { setPage(1); }, [searchValue, token, source, listType]);
+  // Only reset page to 1 when searchValue, token, source, or listType changes (not after delete/refresh)
+  useEffect(() => {
+    setPage(1);
+  }, [searchValue]);
+
+  // Handle deletion: if last item on page and not on first page, move to previous page
+  useEffect(() => {
+    if (domains.length === 0 && page > 1 && meta.total > 0) {
+      // Only decrement page ONCE, and only after fetchPage has run for the new page
+      // Use a guard to prevent infinite loop
+      setPage(prev => {
+        if (prev === 1) return 1;
+        // If meta.total is exactly (prev-1)*pageSize, we are on an empty page after deletion
+        if (meta.total <= (prev - 1) * pageSize) {
+          return prev - 1;
+        }
+        return prev;
+      });
+    }
+  }, [domains, meta.total, page]);
+
+  // Refresh data on custom event
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      if (
+        e.detail &&
+        e.detail.source === source &&
+        e.detail.listType === listType
+      ) {
+        fetchPage();
+      }
+    };
+    window.addEventListener('domain-list-section-refresh', handler as EventListener);
+    return () => {
+      window.removeEventListener('domain-list-section-refresh', handler as EventListener);
+    };
+  }, [fetchPage, source, listType, token, page]);
 
   return (
     <div className="flex-1 flex flex-col mb-6">
