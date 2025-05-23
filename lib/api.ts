@@ -13,10 +13,12 @@ export async function login(username: string, password: string) {
 }
 
 export async function fetchDomains(token: string, source: string, list_type: string,
-  offset: number, limit: number) { 
+  offset: number, limit: number, keyword?: string) { 
+  const params: Record<string, string | number> = { offset, limit };
+  if (keyword && keyword.length > 0) params.search = keyword;
   const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
     headers: { Authorization: "Bearer " + token },
-    params: { offset, limit },
+    params,
   });
   return res.data;
 }
@@ -44,10 +46,12 @@ export async function deleteDomain(token: string, source: string, domain: string
   });
 }
 
-export async function fetchDomainLogs(token: string, offset = 0, limit = 100) {
+export async function fetchDomainLogs(token: string, offset = 0, limit = 100, keyword?: string) {
+  const params: Record<string, string | number> = { offset, limit };
+  if (keyword && keyword.length > 0) params.keyword = keyword;
   const res = await axios.get(`${API_BASE}/api/domain-logs`, {
     headers: { Authorization: "Bearer " + token },
-    params: { offset, limit },
+    params,
   });
   return res.data;
 }

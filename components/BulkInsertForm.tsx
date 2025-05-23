@@ -3,7 +3,7 @@ import { useState } from "react";
 import { addDomain } from "@/lib/api";
 import { AxiosErrorShape } from "@/lib/types";
 
-export default function BulkInsertForm({ token }: { token: string }) {
+export default function BulkInsertForm({ token, onUnauthorized }: { token: string, onUnauthorized?: () => void }) {
   const [domains, setDomains] = useState("");
   const [listType, setListType] = useState("blacklist");
   const [result, setResult] = useState<React.ReactNode>("");
@@ -40,6 +40,10 @@ export default function BulkInsertForm({ token }: { token: string }) {
         } else if (code === 422) {
           fail++;
           if (fail === 1) setResult(<span className="text-rose-500">Validation error: {msg}</span>);
+        } else if (code === 401) {
+          if (onUnauthorized) onUnauthorized();
+          setResult(<span className="text-rose-500">Unauthorized. Please log in again.</span>);
+          return;
         } else {
           fail++;
           console.error("Error adding domain:", domain, e);

@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Tabs from "./Tabs";
 import DomainsTable from "./DomainsTable";
-import AddDomainForm from "./AddDomainForm";
 import BulkInsertForm from "./BulkInsertForm";
 import StatsPanel from "./StatsPanel";
 
@@ -13,10 +12,10 @@ export default function AdminPanel({
   token: string;
   setToken: (token: string | null) => void;
 }) {
-  const [tab, setTab] = useState("view");
+  const [tab, setTab] = useState("domains");
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <nav className="bg-gradient-to-r from-indigo-700 to-purple-500 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
+      <nav className="bg-indigo-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <span className="material-symbols-outlined text-white text-2xl">admin_panel_settings</span>
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
@@ -66,9 +65,9 @@ export default function AdminPanel({
         onChange={setTab}
       />
       <div className="my-8">
-        {tab === "view" && <DomainsTable token={token} />}
-        {tab === "update" && <BulkInsertForm token={token} />}  
-        {tab === "stats" && <StatsPanel token={token} />}
+        {tab === "view" && <DomainsTable token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }} />}
+        {tab === "update" && <BulkInsertForm token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }}/>}
+        {tab === "stats" && <StatsPanel token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }}/>}
       </div>
     </div>
   );

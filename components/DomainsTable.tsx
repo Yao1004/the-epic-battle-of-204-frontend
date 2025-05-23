@@ -38,7 +38,7 @@ function ConfirmModal({ open, onConfirm, onCancel, domain, listType }: {
   );
 }
 
-export default function DomainsTable({ token }: { token: string }) {
+export default function DomainsTable({ token, onUnauthorized }: { token: string, onUnauthorized: () => void }) {
   const [msg, setMsg] = useState("");
   const [search, setSearch] = useState(["", "", "", ""]);
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -65,8 +65,13 @@ export default function DomainsTable({ token }: { token: string }) {
     } catch (e) {
       let msg = "";
       if (typeof e === "object" && e && "response" in e) {
-        const err = e as AxiosErrorShape;
-        msg = err.response?.data?.detail || err.message || "";
+        const err = e as AxiosErrorShape & { response?: { status?: number; data?: { detail?: string } } };
+        const response = err.response;
+        if (response && typeof response.status === 'number' && response.status === 401 && onUnauthorized) {
+          onUnauthorized();
+          return;
+        }
+        msg = response?.data?.detail || err.message || "";
       } else if (e instanceof Error) {
         msg = e.message;
       }
@@ -78,7 +83,13 @@ export default function DomainsTable({ token }: { token: string }) {
 
   return (
     <div>
-      <div className="mb-3">{msg && <span className="text-rose-500">{msg}</span>}</div>
+      <div className="mb-3">
+        {msg && <span className="text-rose-500">{msg}</span>}
+        {/* Show unauthorized message if token is missing */}
+        {!token && (
+          <span className="text-rose-500 block mt-2">You are not authorized. Please log in again.</span>
+        )}
+      </div>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px] p-6">
         {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
