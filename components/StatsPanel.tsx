@@ -80,7 +80,7 @@ export default function StatsPanel({ token }: { token: string }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-10 mx-auto mt-8">
+    <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-10 mx-auto mt-8">
       {/* <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
@@ -117,16 +117,20 @@ export default function StatsPanel({ token }: { token: string }) {
               <span className="material-symbols-outlined mr-1 text-indigo-600">calendar_month</span>
               Recent Activity
             </div>
-            <input
-              className="ml-auto border border-gray-300 rounded px-2 py-1 text-sm bg-white dark:bg-gray-900"
-              type="text"
-              placeholder="Search domain..."
-              value={search}
-              onChange={e => { setPage(1); setSearch(e.target.value); }}
-              style={{ minWidth: 180 }}
-            />
+            <div className="relative mb-2" style={{ minWidth: 180 }}>
+              <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                search
+              </span>
+              <input
+                className="pl-8 pr-2 py-1 border border-gray-300 rounded text-sm focus:border-indigo-500 focus:outline-none w-full"
+                type="text"
+                placeholder="Search..."
+                value={search}
+                onChange={e => { setPage(1); setSearch(e.target.value); }}
+              />
+            </div>
           </div>
-          <div className="divide-y divide-gray-200 text-sm">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
             {loading ? (
               <div className="py-2 text-gray-400">Loading…</div>
             ) : error ? (
@@ -142,7 +146,11 @@ export default function StatsPanel({ token }: { token: string }) {
                     </span>
                     <span>{log.domain} {log.status === "blocked" ? "blocked" : log.status === "allowed" ? "allowed" : log.status === "reviewed" ? "reviewed" : log.status}</span>
                   </div>
-                  <span className="text-gray-400">{new Date(log.timestamp).toLocaleString()}</span>
+                  <span className="text-gray-400">
+                    {new Date(log.timestamp).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    {" "}
+                    {new Date(log.timestamp).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
+                  </span>
                 </div>
               ))
             )}
