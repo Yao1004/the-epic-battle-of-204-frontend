@@ -95,14 +95,19 @@ export function DomainListSection({
 
   return (
     <div className="flex-1 flex flex-col mb-6">
-      <div className="font-semibold text-gray-500 mb-1">{title}</div>
-      <input
-        type="text"
-        className="mb-2 px-2 py-1 border border-gray-300 rounded text-sm"
-        placeholder="Search..."
-        value={searchValue}
-        onChange={e => setSearchValue(e.target.value)}
-      />
+      <div className="font-semibold text-gray-500 dark:text-gray-300 mb-1">{title}</div>
+      <div className="relative mb-2">
+        <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          search
+        </span>
+        <input
+          type="text"
+          className="pl-8 pr-2 py-1 border border-gray-300 rounded text-sm focus:border-indigo-500 focus:outline-none w-full"
+          placeholder="Search..."
+          value={searchValue}
+          onChange={e => setSearchValue(e.target.value)}
+        />
+      </div>
       {loading ? (
         <div className="text-gray-400 text-sm mb-2">Loading…</div>
       ) : domains.length === 0 ? (
@@ -110,7 +115,7 @@ export function DomainListSection({
       ) : (
         <>
         <div className="overflow-y-auto max-h-56">
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {domains.map((row) => (
               <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 group flex items-center">
                 <span>{row.domain}</span>

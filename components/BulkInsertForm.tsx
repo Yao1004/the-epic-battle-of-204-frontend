@@ -75,7 +75,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
+    <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
       {/* <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
         <span className="material-symbols-outlined">upload_file</span>
         <span>Bulk Domain Upload</span>
@@ -96,7 +96,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         </div>
         <textarea
           rows={6}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all min-h-[100px]"
+          className="w-full p-3 border border-gray-300 rounded-lg  focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all min-h-[100px]"
           placeholder={`example1.com\nexample2.com\nexample3.com`}
           required
           value={domains}
@@ -110,7 +110,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
                 <span className="material-symbols-outlined text-lg">list_alt</span>
               </span>
               <select
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-gray-100 dark:bg-gray-800 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all"
                 value={listType}
                 onChange={e => setListType(e.target.value)}
                 required

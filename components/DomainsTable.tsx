@@ -90,7 +90,7 @@ export default function DomainsTable({ token, onUnauthorized }: { token: string,
           <span className="text-rose-500 block mt-2">You are not authorized. Please log in again.</span>
         )}
       </div>
-      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg min-h-[150px]">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px] p-6">
         {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left: Whitelist */}
@@ -117,7 +117,7 @@ export default function DomainsTable({ token, onUnauthorized }: { token: string,
             </div>
             {/* Right: Blacklist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-rose-600 dark:text-rose-400 mb-2 text-lg">Blacklist</div>
+              <div className="font-bold text-rose-600 dark:text-rose-400              ps aux | grep mtxrun mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[1]}
