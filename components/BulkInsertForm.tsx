@@ -82,7 +82,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
       </div> */}
       <form onSubmit={handleSubmit} className="p-5 flex-1 flex flex-col h-full">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center mb-4">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-400">Domain Names (one per line)</label>
+          <label className="text-sm font-semibold text-gray-500 dark:text-gray-300 mb-1">Domain Names (one per line)</label>
           <label className="inline-flex items-center cursor-pointer text-indigo-700 hover:text-indigo-900 text-sm font-medium ml-auto">
             <span className="material-symbols-outlined mr-1 text-base">attach_file</span>
             <span>Upload a .txt File</span>
@@ -96,7 +96,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         </div>
         <textarea
           rows={6}
-          className="w-full p-3 border border-gray-300 rounded-lg  focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all min-h-[100px]"
+          className="w-full p-3 border border-gray-300 rounded-lg  focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all min-h-[100px] mb-6"
           placeholder={`example1.com\nexample2.com\nexample3.com`}
           required
           value={domains}
@@ -104,7 +104,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         ></textarea>
         <div className="flex flex-col mt-auto gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-400 mt-4 mb-2">List Type</label>
+            <label className="text-sm font-semibold text-gray-500 dark:text-gray-300 mt-auto mb-2">List Type</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                 <span className="material-symbols-outlined text-lg">list_alt</span>
@@ -123,7 +123,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
               </span>
             </div>
           </div>
-          <div>
+          <div className="mt-auto">
             <button
               type="submit"
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0 flex items-center justify-center space-x-2"

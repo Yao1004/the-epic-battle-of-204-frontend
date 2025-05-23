@@ -117,7 +117,7 @@ export function DomainListSection({
         <div className="overflow-y-auto max-h-56">
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {domains.map((row) => (
-              <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 group flex items-center">
+              <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 dark:hover:bg-gray-400 group flex items-center">
                 <span>{row.domain}</span>
                 <button
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity text-base"

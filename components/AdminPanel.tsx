@@ -15,7 +15,7 @@ export default function AdminPanel({
   const [tab, setTab] = useState("domains");
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <nav className="bg-indigo-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
+      <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <span className="material-symbols-outlined text-white text-2xl">admin_panel_settings</span>
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
@@ -55,7 +55,7 @@ export default function AdminPanel({
             label: (
               <span className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-base">bar_chart</span>
-                Domain Statistics
+                Statistics
               </span>
             ),
             value: "stats",
