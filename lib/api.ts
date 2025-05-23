@@ -15,7 +15,7 @@ export async function login(username: string, password: string) {
 export async function fetchDomains(token: string, source: string, list_type: string,
   offset: number, limit: number, keyword?: string) { 
   const params: Record<string, string | number> = { offset, limit };
-  if (keyword && keyword.length > 0) params.search = keyword;
+  if (keyword && keyword.length > 0) params.keyword = keyword;
   const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
     headers: { Authorization: "Bearer " + token },
     params,
