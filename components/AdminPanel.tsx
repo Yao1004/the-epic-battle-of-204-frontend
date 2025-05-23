@@ -17,7 +17,12 @@ export default function AdminPanel({
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
         <div className="flex items-center space-x-3">
-          <span className="material-symbols-outlined text-white text-2xl">admin_panel_settings</span>
+          <img
+            src="/favicon.ico"
+            alt="Admin Icon"
+            className="w-12 h-12" // Adjust size as needed
+            style={{ imageRendering: "auto" }}
+          />
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
         </div>
         <button
