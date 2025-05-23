@@ -146,7 +146,7 @@ export function DomainListSection({
               : (
                 <button
                   key={`page-${p}`}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-blue-500 hover:bg-blue-100'}`}
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-indigo-500 text-white shadow-lg' : 'bg-transparent text-indigo-500 hover:bg-indigo-100'}`}
                   onClick={() => setPage(Number(p))}
                   disabled={p === page}
                 >

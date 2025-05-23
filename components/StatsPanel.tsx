@@ -81,31 +81,31 @@ export default function StatsPanel({ token }: { token: string }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mb-10 max-w-3xl mx-auto mt-8">
-      <div className="bg-gradient-to-r from-indigo-700 to-indigo-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
+      <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
       </div>
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row gap-5 mb-6">
-          <div className="flex-1 bg-emerald-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
-            <span className="bg-emerald-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
+          <div className="flex-1 bg-emerald-50 dark:bg-emerald-600 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
+            <span className="bg-emerald-600 dark:bg-emerald-100 text-white dark:text-emerald-800 p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined">check_circle</span>
             </span>
             <div className="text-left">
               <div className="flex flex-row items-center font-bold text-xl">
-                <div className="text-emerald-800 font-bold text-lg">Allowed</div>
-                <div className="text-2xl font-extrabold text-emerald-900 ml-2 ">{stats.whitelist_count}</div>
+                <div className="text-emerald-800 dark:text-emerald-200 font-bold text-lg">Allowed</div>
+                <div className="text-2xl font-extrabold text-emerald-900 dark:text-emerald-50 ml-2 ">{stats.whitelist_count}</div>
               </div>
             </div>
           </div>
-          <div className="flex-1 bg-rose-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
-            <span className="bg-rose-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
+          <div className="flex-1 bg-rose-50 dark:bg-rose-600 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
+            <span className="bg-rose-600 dark:bg-rose-100 text-white dark:text-rose-800 p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined">block</span>
             </span>
             <div className="text-left">
               <div className="flex flex-row items-center font-bold text-xl">
-                <div className="text-rose-800 font-bold text-lg">Blocked</div>
-                <div className="text-2xl font-extrabold text-rose-900 ml-2 ">{stats.blacklist_count}</div>
+                <div className="text-rose-800 dark:text-rose-200 font-bold text-lg">Blocked</div>
+                <div className="text-2xl font-extrabold text-rose-900 dark:text-rose-50 ml-2 ">{stats.blacklist_count}</div>
               </div>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function StatsPanel({ token }: { token: string }) {
                 : (
                   <button
                     key={`page-${p}`}
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-blue-500 text-white shadow-lg' : 'bg-transparent text-blue-500 hover:bg-blue-100'}`}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-indigo-500 text-white shadow-lg' : 'bg-transparent text-indigo-500 hover:bg-indigo-100'}`}
                     onClick={() => setPage(Number(p))}
                     disabled={p === page}
                   >

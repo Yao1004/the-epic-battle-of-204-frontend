@@ -22,7 +22,7 @@ export default function AdminPanel({
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
         </div>
         <button
-          className="flex items-center space-x-1 bg-white hover:bg-rose-50 text-rose-600 border border-rose-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
+          className="flex items-center space-x-1 bg-white dark:bg-purple-600 hover:bg-purple-50 dark:hover:bg-purple-800 text-purple-600 dark:text-white border-3 border-purple-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
           onClick={() => {
             setToken(null);
             localStorage.removeItem("token");

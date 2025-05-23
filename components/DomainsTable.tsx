@@ -84,22 +84,15 @@ export default function DomainsTable({ token }: { token: string }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left: Whitelist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-emerald-600 dark:text-emerald-300 mb-2 text-lg">Whitelist</div>
+              <div className="font-bold text-emerald-600 dark:text-emerald-200 mb-2 text-lg">Whitelist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[0]}
                 setSearchValue={v => setSearch([v, search[1], search[2], search[3]])}
                 onDelete={handleDelete}
                 source="manual"
-
-
-
-
-
-
-
-                token={token}
                 listType="whitelist"
+                token={token}
               />
               <DomainListSection
                 title="LLM"
@@ -107,13 +100,13 @@ export default function DomainsTable({ token }: { token: string }) {
                 setSearchValue={v => setSearch([search[0], search[1], v, search[3]])}
                 onDelete={handleDelete}
                 source="llm"
-                token={token}
                 listType="whitelist"
+                token={token}
               />
             </div>
             {/* Right: Blacklist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-rose-600 dark:text-rose-300 mb-2 text-lg">Blacklist</div>
+              <div className="font-bold text-rose-600 dark:text-rose-200 mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[1]}

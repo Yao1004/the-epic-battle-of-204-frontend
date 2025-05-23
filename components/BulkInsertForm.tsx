@@ -47,7 +47,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
         }
       }
     }
-    let summary = <span className="text-emerald-600 font-bold">{ok} added</span>;
+    let summary = <span className="text-emerald-600 font-bold">{ok} domains added ({listType === "blacklist" ? "Blacklist" : "Whitelist"})</span>;
     if (dup) summary = <>{summary}, <span className="text-yellow-600 font-bold">{dup} duplicated</span></>;
     if (fail) summary = <>{summary}, <span className="text-rose-500 font-bold">{fail} failed</span></>;
     setResult(summary);
@@ -106,7 +106,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
                 <span className="material-symbols-outlined text-lg">list_alt</span>
               </span>
               <select
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white dark:bg-gray-800 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all"
                 value={listType}
                 onChange={e => setListType(e.target.value)}
                 required
