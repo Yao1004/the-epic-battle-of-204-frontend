@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Tabs from "./Tabs";
 import DomainsTable from "./DomainsTable";
-import AddDomainForm from "./AddDomainForm";
 import BulkInsertForm from "./BulkInsertForm";
 import StatsPanel from "./StatsPanel";
 
