@@ -71,13 +71,13 @@ export default function BulkInsertForm({ token }: { token: string }) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
       <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
         <span className="material-symbols-outlined">upload_file</span>
         <span>Bulk Domain Upload</span>
       </div>
-      <form onSubmit={handleSubmit} className="p-5 space-y-4 h-full flex flex-col">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+      <form onSubmit={handleSubmit} className="p-5 flex-1 flex flex-col h-full">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center mb-4">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-400">Domain Names (one per line)</label>
           <label className="inline-flex items-center cursor-pointer text-cyan-700 hover:text-cyan-900 text-sm font-medium ml-auto">
             <span className="material-symbols-outlined mr-1 text-base">attach_file</span>
@@ -98,34 +98,38 @@ export default function BulkInsertForm({ token }: { token: string }) {
           value={domains}
           onChange={e => setDomains(e.target.value)}
         ></textarea>
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-400">List Type</label>
-          <div className="relative">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-              <span className="material-symbols-outlined text-lg">list_alt</span>
-            </span>
-            <select
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all"
-              value={listType}
-              onChange={e => setListType(e.target.value)}
-              required
+        <div className="flex flex-col mt-auto gap-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-400">List Type</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                <span className="material-symbols-outlined text-lg">list_alt</span>
+              </span>
+              <select
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all"
+                value={listType}
+                onChange={e => setListType(e.target.value)}
+                required
+              >
+                <option value="blacklist">Blacklist</option>
+                <option value="whitelist">Whitelist</option>
+              </select>
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 pointer-events-none">
+                <span className="material-symbols-outlined text-lg">expand_more</span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2.5 px-4 rounded-lg transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0 flex items-center justify-center space-x-2"
             >
-              <option value="blacklist">Blacklist</option>
-              <option value="whitelist">Whitelist</option>
-            </select>
-            <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 pointer-events-none">
-              <span className="material-symbols-outlined text-lg">expand_more</span>
-            </span>
+              <span className="material-symbols-outlined">upload</span>
+              <span>Upload</span>
+            </button>
+            <div className="mt-4 text-sm font-medium">{result}</div>
           </div>
         </div>
-        <button
-          type="submit"
-          className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2.5 px-4 rounded-lg transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0 flex items-center justify-center space-x-2"
-        >
-          <span className="material-symbols-outlined">upload</span>
-          <span>Upload</span>
-        </button>
-        <div className="mt-4 text-sm font-medium">{result}</div>
       </form>
     </div>
   );

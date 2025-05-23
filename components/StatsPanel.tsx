@@ -92,8 +92,10 @@ export default function StatsPanel({ token }: { token: string }) {
               <span className="material-symbols-outlined">check_circle</span>
             </span>
             <div className="text-left">
-              <div className="text-green-800 font-bold text-lg">Allowed</div>
-              <div className="text-2xl font-extrabold text-green-900">{stats.whitelist_count}</div>
+              <div className="flex flex-row items-center font-bold text-xl">
+                <div className="text-green-800 font-bold text-lg">Allowed</div>
+                <div className="text-2xl font-extrabold text-green-900 ml-2 ">{stats.whitelist_count}</div>
+              </div>
             </div>
           </div>
           <div className="flex-1 bg-red-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
@@ -101,8 +103,10 @@ export default function StatsPanel({ token }: { token: string }) {
               <span className="material-symbols-outlined">block</span>
             </span>
             <div className="text-left">
-              <div className="text-red-800 font-bold text-lg">Blocked</div>
-              <div className="text-2xl font-extrabold text-red-900">{stats.blacklist_count}</div>
+              <div className="flex flex-row items-center font-bold text-xl">
+                <div className="text-red-800 font-bold text-lg">Blocked</div>
+                <div className="text-2xl font-extrabold text-red-900 ml-2 ">{stats.blacklist_count}</div>
+              </div>
             </div>
           </div>
         </div>

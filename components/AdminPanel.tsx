@@ -44,11 +44,11 @@ export default function AdminPanel({
       <div className="my-8">
         {tab === "view" && <DomainsTable token={token} />}
         {tab === "update" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            <div className="min-h-[520px] w-full">
               <AddDomainForm token={token} />
             </div>
-            <div>
+            <div className="min-h-[520px] w-full">
               <BulkInsertForm token={token} />
             </div>
           </div>
