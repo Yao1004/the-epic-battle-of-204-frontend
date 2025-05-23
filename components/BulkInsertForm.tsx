@@ -51,7 +51,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         }
       }
     }
-    let summary = <span className="text-emerald-600 font-bold">{ok} added</span>;
+    let summary = <span className="text-emerald-600 font-bold">{ok} domains added ({listType === "blacklist" ? "Blacklist" : "Whitelist"})</span>;
     if (dup) summary = <>{summary}, <span className="text-yellow-600 font-bold">{dup} duplicated</span></>;
     if (fail) summary = <>{summary}, <span className="text-rose-500 font-bold">{fail} failed</span></>;
     setResult(summary);
@@ -75,17 +75,17 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
-      <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
+      {/* <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
         <span className="material-symbols-outlined">upload_file</span>
-        <span>Domain Upload</span>
-      </div>
+        <span>Bulk Domain Upload</span>
+      </div> */}
       <form onSubmit={handleSubmit} className="p-5 flex-1 flex flex-col h-full">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center mb-4">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-400">Domain Names (one per line)</label>
-          <label className="inline-flex items-center cursor-pointer text-cyan-700 hover:text-cyan-900 text-sm font-medium ml-auto">
+          <label className="inline-flex items-center cursor-pointer text-indigo-700 hover:text-indigo-900 text-sm font-medium ml-auto">
             <span className="material-symbols-outlined mr-1 text-base">attach_file</span>
-            <span>Upload .txt</span>
+            <span>Upload a .txt File</span>
             <input
               type="file"
               accept=".txt"
@@ -96,7 +96,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         </div>
         <textarea
           rows={6}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all min-h-[100px]"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all min-h-[100px]"
           placeholder={`example1.com\nexample2.com\nexample3.com`}
           required
           value={domains}
@@ -104,13 +104,13 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         ></textarea>
         <div className="flex flex-col mt-auto gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-400">List Type</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-400 mt-4 mb-2">List Type</label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                 <span className="material-symbols-outlined text-lg">list_alt</span>
               </span>
               <select
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg appearance-none bg-white dark:bg-gray-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 value={listType}
                 onChange={e => setListType(e.target.value)}
                 required
@@ -126,10 +126,10 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
           <div>
             <button
               type="submit"
-              className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2.5 px-4 rounded-lg transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0 flex items-center justify-center space-x-2"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0 flex items-center justify-center space-x-2"
             >
-              <span className="material-symbols-outlined">upload</span>
-              <span>Upload</span>
+              <span className="material-symbols-outlined">playlist_add</span>
+              <span>Add</span>
             </button>
             <div className="mt-4 text-sm font-medium">{result}</div>
           </div>

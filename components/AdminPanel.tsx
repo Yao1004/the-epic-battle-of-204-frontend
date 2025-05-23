@@ -21,7 +21,7 @@ export default function AdminPanel({
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
         </div>
         <button
-          className="flex items-center space-x-1 bg-white hover:bg-red-50 text-red-600 border border-red-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
+          className="flex items-center space-x-1 bg-purple-600 hover:bg-purple-800 text-white border-3 border-purple-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
           onClick={() => {
             setToken(null);
             localStorage.removeItem("token");
@@ -33,9 +33,33 @@ export default function AdminPanel({
       </nav>
       <Tabs
         tabs={[
-          { label: "View Domain List", value: "view" },
-          { label: "Update Domain List", value: "update" },
-          { label: "Domain Statistics", value: "stats" },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">list_alt</span>
+                View Domain Lists
+              </span>
+            ),
+            value: "view",
+          },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">playlist_add</span>
+                Add to Domain Lists
+              </span>
+            ),
+            value: "update",
+          },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">bar_chart</span>
+                Domain Statistics
+              </span>
+            ),
+            value: "stats",
+          },
         ]}
         active={tab}
         onChange={setTab}

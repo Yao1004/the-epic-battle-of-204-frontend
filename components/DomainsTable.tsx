@@ -14,14 +14,14 @@ function ConfirmModal({ open, onConfirm, onCancel, domain, listType }: {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white rounded-xl shadow-lg p-6 min-w-[300px]">
-        <div className="mb-4 text-gray-800 text-lg font-semibold">Confirm Deletion</div>
-        <div className="mb-6 text-gray-600 text-sm">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 min-w-[300px]">
+        <div className="mb-4 text-gray-800 dark:text-white text-lg font-semibold">Confirm Deletion</div>
+        <div className="mb-6 text-gray-600 dark:text-gray-200 text-sm">
           Are you sure to delete <span className="font-bold">{domain}</span> from <span className="font-bold">{listType}</span>?
         </div>
         <div className="flex justify-end space-x-2">
           <button
-            className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
+            className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
             onClick={onCancel}
           >
             Cancel
@@ -95,15 +95,15 @@ export default function DomainsTable({ token, onUnauthorized }: { token: string,
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left: Whitelist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-emerald-600 dark:text-emerald-300 mb-2 text-lg">Whitelist</div>
+              <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-2 text-lg">Whitelist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[0]}
                 setSearchValue={v => setSearch([v, search[1], search[2], search[3]])}
                 onDelete={handleDelete}
                 source="manual"
-                token={token}
                 listType="whitelist"
+                token={token}
               />
               <DomainListSection
                 title="LLM"
@@ -111,13 +111,13 @@ export default function DomainsTable({ token, onUnauthorized }: { token: string,
                 setSearchValue={v => setSearch([search[0], search[1], v, search[3]])}
                 onDelete={handleDelete}
                 source="llm"
-                token={token}
                 listType="whitelist"
+                token={token}
               />
             </div>
             {/* Right: Blacklist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-rose-600 dark:text-rose-300 mb-2 text-lg">Blacklist</div>
+              <div className="font-bold text-rose-600 dark:text-rose-400 mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[1]}
