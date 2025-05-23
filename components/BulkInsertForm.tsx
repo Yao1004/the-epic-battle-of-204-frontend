@@ -51,7 +51,7 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
         }
       }
     }
-    let summary = <span className="text-emerald-600 font-bold">{ok} domains added ({listType === "blacklist" ? "Blacklist" : "Whitelist"})</span>;
+    let summary = <span className="text-emerald-600 font-bold">{ok} domains added to {listType === "blacklist" ? "Blacklist" : "Whitelist"}</span>;
     if (dup) summary = <>{summary}, <span className="text-yellow-600 font-bold">{dup} duplicated</span></>;
     if (fail) summary = <>{summary}, <span className="text-rose-500 font-bold">{fail} failed</span></>;
     setResult(summary);
