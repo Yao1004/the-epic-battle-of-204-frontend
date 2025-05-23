@@ -17,7 +17,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
       .filter((line) => line.length > 0);
 
     if (!domainList.length) {
-      setResult(<span className="text-red-500">Please enter at least one domain.</span>);
+      setResult(<span className="text-rose-500">Please enter at least one domain.</span>);
       return;
     }
 
@@ -39,17 +39,17 @@ export default function BulkInsertForm({ token }: { token: string }) {
           dup++;
         } else if (code === 422) {
           fail++;
-          if (fail === 1) setResult(<span className="text-red-500">Validation error: {msg}</span>);
+          if (fail === 1) setResult(<span className="text-rose-500">Validation error: {msg}</span>);
         } else {
           fail++;
           console.error("Error adding domain:", domain, e);
-          if (fail === 1) setResult(<span className="text-red-500">Internal error: {msg}</span>);
+          if (fail === 1) setResult(<span className="text-rose-500">Internal error: {msg}</span>);
         }
       }
     }
-    let summary = <span className="text-green-600 font-bold">{ok} added</span>;
+    let summary = <span className="text-emerald-600 font-bold">{ok} added</span>;
     if (dup) summary = <>{summary}, <span className="text-yellow-600 font-bold">{dup} duplicated</span></>;
-    if (fail) summary = <>{summary}, <span className="text-red-500 font-bold">{fail} failed</span></>;
+    if (fail) summary = <>{summary}, <span className="text-rose-500 font-bold">{fail} failed</span></>;
     setResult(summary);
     setDomains("");
   };
@@ -58,7 +58,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.type !== "text/plain") {
-      setResult(<span className="text-red-500">Only .txt files are supported.</span>);
+      setResult(<span className="text-rose-500">Only .txt files are supported.</span>);
       return;
     }
     try {
@@ -66,7 +66,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
       setDomains((prev) => prev + (prev && !prev.endsWith("\n") ? "\n" : "") + text.trim());
       setResult("");
     } catch {
-      setResult(<span className="text-red-500">Failed to read file.</span>);
+      setResult(<span className="text-rose-500">Failed to read file.</span>);
     }
   };
 

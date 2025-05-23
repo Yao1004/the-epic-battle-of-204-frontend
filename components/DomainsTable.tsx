@@ -27,7 +27,7 @@ function ConfirmModal({ open, onConfirm, onCancel, domain, listType }: {
             Cancel
           </button>
           <button
-            className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+            className="px-4 py-2 rounded bg-rose-600 text-white hover:bg-rose-700"
             onClick={onConfirm}
           >
             Delete
@@ -71,19 +71,26 @@ export default function DomainsTable({ token }: { token: string }) {
 
   return (
     <div>
-      <div className="mb-3">{msg && <span className="text-red-500">{msg}</span>}</div>
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg min-h-[150px]">
+      <div className="mb-3">{msg && <span className="text-rose-500">{msg}</span>}</div>
+      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg min-h-[150px]">
         {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left: Whitelist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-gray-600 dark:text-gray-300 mb-2 text-lg">Whitelist</div>
+              <div className="font-bold text-emerald-600 dark:text-emerald-300 mb-2 text-lg">Whitelist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[0]}
                 setSearchValue={v => setSearch([v, search[1], search[2], search[3]])}
                 onDelete={handleDelete}
                 source="manual"
+
+
+
+
+
+
+
                 token={token}
                 listType="whitelist"
               />
@@ -99,7 +106,7 @@ export default function DomainsTable({ token }: { token: string }) {
             </div>
             {/* Right: Blacklist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-gray-600 dark:text-gray-300 mb-2 text-lg">Blacklist</div>
+              <div className="font-bold text-rose-600 dark:text-rose-300 mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[1]}

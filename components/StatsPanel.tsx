@@ -81,31 +81,31 @@ export default function StatsPanel({ token }: { token: string }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mb-10 max-w-3xl mx-auto mt-8">
-      <div className="bg-gradient-to-r from-indigo-700 to-purple-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
+      <div className="bg-gradient-to-r from-indigo-700 to-indigo-500 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
       </div>
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row gap-5 mb-6">
-          <div className="flex-1 bg-green-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
-            <span className="bg-green-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
+          <div className="flex-1 bg-emerald-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
+            <span className="bg-emerald-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined">check_circle</span>
             </span>
             <div className="text-left">
               <div className="flex flex-row items-center font-bold text-xl">
-                <div className="text-green-800 font-bold text-lg">Allowed</div>
-                <div className="text-2xl font-extrabold text-green-900 ml-2 ">{stats.whitelist_count}</div>
+                <div className="text-emerald-800 font-bold text-lg">Allowed</div>
+                <div className="text-2xl font-extrabold text-emerald-900 ml-2 ">{stats.whitelist_count}</div>
               </div>
             </div>
           </div>
-          <div className="flex-1 bg-red-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
-            <span className="bg-red-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
+          <div className="flex-1 bg-rose-50 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">
+            <span className="bg-rose-600 text-white p-3 rounded-full mr-4 text-2xl flex items-center justify-center shadow-lg">
               <span className="material-symbols-outlined">block</span>
             </span>
             <div className="text-left">
               <div className="flex flex-row items-center font-bold text-xl">
-                <div className="text-red-800 font-bold text-lg">Blocked</div>
-                <div className="text-2xl font-extrabold text-red-900 ml-2 ">{stats.blacklist_count}</div>
+                <div className="text-rose-800 font-bold text-lg">Blocked</div>
+                <div className="text-2xl font-extrabold text-rose-900 ml-2 ">{stats.blacklist_count}</div>
               </div>
             </div>
           </div>
@@ -130,14 +130,14 @@ export default function StatsPanel({ token }: { token: string }) {
             {loading ? (
               <div className="py-2 text-gray-400">Loading…</div>
             ) : error ? (
-              <div className="py-2 text-red-500">{error}</div>
+              <div className="py-2 text-rose-500">{error}</div>
             ) : logs.length === 0 ? (
               <div className="py-2 text-gray-400">No recent activity.</div>
             ) : (
               logs.map((log) => (
                 <div key={log.id} className="flex items-center justify-between py-2">
                   <div className="flex items-center">
-                    <span className={`material-symbols-outlined mr-2 ${log.status === "blocked" ? "text-red-500" : log.status === "allowed" ? "text-green-500" : log.status === "reviewed" ? "text-purple-500" : ""}`}>
+                    <span className={`material-symbols-outlined mr-2 ${log.status === "blocked" ? "text-rose-500" : log.status === "allowed" ? "text-emerald-500" : log.status === "reviewed" ? "text-purple-500" : ""}`}>
                       {log.status === "blocked" ? "block" : log.status === "allowed" ? "verified" : log.status === "reviewed" ? "pending" : "info"}
                     </span>
                     <span>{log.domain} {log.status === "blocked" ? "blocked" : log.status === "allowed" ? "allowed" : log.status === "reviewed" ? "reviewed" : log.status}</span>

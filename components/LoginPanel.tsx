@@ -70,7 +70,7 @@ export default function LoginPanel({ setToken }: { setToken: (token: string) => 
           >
             Login
           </button>
-          <div id="login-result" className="text-red-500 text-sm font-medium">{msg}</div>
+          <div id="login-result" className="text-rose-500 text-sm font-medium">{msg}</div>
         </form>
       </div>
     </div>
