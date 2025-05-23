@@ -22,7 +22,7 @@ export default function AdminPanel({
           <span className="text-xl font-bold text-white">THE EPIC BATTLE - Admin Panel</span>
         </div>
         <button
-          className="flex items-center space-x-1 bg-white dark:bg-purple-600 hover:bg-purple-50 dark:hover:bg-purple-800 text-purple-600 dark:text-white border-3 border-purple-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
+          className="flex items-center space-x-1 bg-purple-600 hover:bg-purple-800 text-white border-3 border-purple-300 rounded-lg px-4 py-2 font-medium transition-all duration-200 hover:shadow-sm"
           onClick={() => {
             setToken(null);
             localStorage.removeItem("token");
@@ -34,25 +34,40 @@ export default function AdminPanel({
       </nav>
       <Tabs
         tabs={[
-          { label: "View Domain List", value: "view" },
-          { label: "Update Domain List", value: "update" },
-          { label: "Domain Statistics", value: "stats" },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">list_alt</span>
+                View Domain Lists
+              </span>
+            ),
+            value: "view",
+          },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">playlist_add</span>
+                Add to Domain Lists
+              </span>
+            ),
+            value: "update",
+          },
+          {
+            label: (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">bar_chart</span>
+                Domain Statistics
+              </span>
+            ),
+            value: "stats",
+          },
         ]}
         active={tab}
         onChange={setTab}
       />
       <div className="my-8">
         {tab === "view" && <DomainsTable token={token} />}
-        {tab === "update" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            <div className="min-h-[520px] w-full">
-              <AddDomainForm token={token} />
-            </div>
-            <div className="min-h-[520px] w-full">
-              <BulkInsertForm token={token} />
-            </div>
-          </div>
-        )}  
+        {tab === "update" && <BulkInsertForm token={token} />}  
         {tab === "stats" && <StatsPanel token={token} />}
       </div>
     </div>

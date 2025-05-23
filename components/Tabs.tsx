@@ -1,6 +1,6 @@
 "use client";
 type TabProps = {
-  tabs: { label: string; value: string }[];
+  tabs: { label: React.ReactNode; value: string }[];
   active: string;
   onChange: (val: string) => void;
 };

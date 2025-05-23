@@ -80,11 +80,11 @@ export default function StatsPanel({ token }: { token: string }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mb-10 max-w-3xl mx-auto mt-8">
-      <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-10 mx-auto mt-8">
+      {/* <div className="bg-gradient-to-r from-indigo-700 to-indigo-600 px-6 py-3 flex items-center text-white font-semibold text-lg rounded-t-xl">
         <span className="material-symbols-outlined mr-2">analytics</span>
         Domain Statistics
-      </div>
+      </div> */}
       <div className="px-6 py-6">
         <div className="flex flex-col sm:flex-row gap-5 mb-6">
           <div className="flex-1 bg-emerald-50 dark:bg-emerald-600 rounded-xl flex flex-row items-center justify-center p-4 shadow-md">

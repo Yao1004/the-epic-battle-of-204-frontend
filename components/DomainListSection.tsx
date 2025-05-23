@@ -132,36 +132,36 @@ export function DomainListSection({
           </ul>
         </div>
         {/* Pagination controls styled like the stats panel */}
-        <div className="flex justify-center mt-2 gap-2">
-          <button
-            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
-            onClick={() => setPage(page - 1)}
-            disabled={page === 1}
-          >
-            Prev
-          </button>
-          {pages.map((p, i) =>
-            p === '...'
-              ? <span key={`ellipsis-${i}`} className="px-2 py-1 text-gray-400">...</span>
-              : (
-                <button
-                  key={`page-${p}`}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-indigo-500 text-white shadow-lg' : 'bg-transparent text-indigo-500 hover:bg-indigo-100'}`}
-                  onClick={() => setPage(Number(p))}
-                  disabled={p === page}
-                >
-                  {p}
-                </button>
-              )
-          )}
-          <button
-            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
-            onClick={() => setPage(page + 1)}
-            disabled={page === pageCount || pageCount === 0}
-          >
-            Next
-          </button>
-        </div>
+        <div className="flex justify-center mt-4 gap-2">
+            <button
+              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+              onClick={() => setPage(page - 1)}
+              disabled={page === 1}
+            >
+              Prev
+            </button>
+            {pages.map((p, i) =>
+              p === '...'
+                ? <span key={`ellipsis-${i}`} className="px-2 py-1 text-gray-400">...</span>
+                : (
+                  <button
+                    key={`page-${p}`}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center font-semibold transition-all ${p === page ? 'bg-indigo-500 text-white shadow-lg' : 'bg-transparent text-indigo-500 hover:bg-indigo-100'}`}
+                    onClick={() => setPage(Number(p))}
+                    disabled={p === page}
+                  >
+                    {p}
+                  </button>
+                )
+            )}
+            <button
+              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+              onClick={() => setPage(page + 1)}
+              disabled={page === pageCount || pageCount === 0}
+            >
+              Next
+            </button>
+          </div>
         </>
       )}
     </div>
