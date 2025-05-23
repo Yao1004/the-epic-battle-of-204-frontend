@@ -26,27 +26,23 @@ export function DomainListSection({
   const [loading, setLoading] = useState(false);
   const pageSize = 5;
 
-  // Memoize fetchPage to avoid useEffect dependency warning
+  // Fetch domains with searchValue as a keyword for backend search
   const fetchPage = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize);
+      const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize, searchValue.trim());
       const allDomains = res.domains || [];
       setMeta(res.meta || { total: 0, offset: 0, limit: 0 });
       setDomains(allDomains);
     } finally {
       setLoading(false);
     }
-  }, [token, source, listType, page, pageSize]);
+  }, [token, source, listType, page, pageSize, searchValue]);
 
   useEffect(() => {
     fetchPage();
   }, [fetchPage]);
 
-  // Filtered and paged domains
-  const filtered = searchValue.trim()
-    ? domains.filter(row => row.domain.includes(searchValue))
-    : domains;
   const pageCount = Math.max(1, Math.ceil(meta.total / pageSize));
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
@@ -70,10 +66,8 @@ export function DomainListSection({
   useEffect(() => {
     if (domains.length === 0 && page > 1 && meta.total > 0) {
       // Only decrement page ONCE, and only after fetchPage has run for the new page
-      // Use a guard to prevent infinite loop
       setPage(prev => {
         if (prev === 1) return 1;
-        // If meta.total is exactly (prev-1)*pageSize, we are on an empty page after deletion
         if (meta.total <= (prev - 1) * pageSize) {
           return prev - 1;
         }
@@ -111,13 +105,13 @@ export function DomainListSection({
       />
       {loading ? (
         <div className="text-gray-400 text-sm mb-2">Loading…</div>
-      ) : filtered.length === 0 ? (
+      ) : domains.length === 0 ? (
         <div className="text-gray-400 text-sm mb-2">No records.</div>
       ) : (
         <>
         <div className="overflow-y-auto max-h-56">
           <ul className="divide-y divide-gray-100">
-            {filtered.map((row) => (
+            {domains.map((row) => (
               <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 group flex items-center">
                 <span>{row.domain}</span>
                 <button

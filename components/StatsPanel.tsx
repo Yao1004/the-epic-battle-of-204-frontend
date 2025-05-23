@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchDomainLogs, fetchListStats } from "@/lib/api";
+import { AxiosErrorShape } from "@/lib/types";
 
 interface DomainLog {
   id: number;
@@ -9,7 +10,7 @@ interface DomainLog {
   timestamp: string;
 }
 
-export default function StatsPanel({ token }: { token: string }) {
+export default function StatsPanel({ token, onUnauthorized}: { token: string, onUnauthorized?: () => void }) {
   const [logs, setLogs] = useState<DomainLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,25 +31,29 @@ export default function StatsPanel({ token }: { token: string }) {
       try {
         const s = await fetchListStats(token);
         setStats(s);
-      } catch {
-        // ignore stats error for now
+      } catch (e) {
+        if (typeof e === "object" && e && "response" in e) {
+          const err = e as AxiosErrorShape & { response?: { status?: number; data?: { detail?: string } } };
+          const response = err.response;
+          if (response && typeof response.status === 'number' && response.status === 401 && onUnauthorized) {
+            onUnauthorized();
+            return;
+          }
+          setError(response?.data?.detail || err.message || "");
+        }
       }
     }
     loadStats();
-  }, [token]);
+  }, [token, onUnauthorized]);
 
   useEffect(() => {
     async function load() {
       setLoading(true);
       setError("");
       try {
-        const res = await fetchDomainLogs(token, (page - 1) * pageSize, pageSize);
-        // Response structure: { logs: DomainLog[], meta: { total, offset, limit } }
-        let logsData = res.logs || [];
+        const res = await fetchDomainLogs(token, (page - 1) * pageSize, pageSize, search.trim());
+        const logsData = res.logs || [];
         setTotal(res.meta?.total || logsData.length || 0);
-        if (search.trim()) {
-          logsData = logsData.filter((log: DomainLog) => log.domain.toLowerCase().includes(search.trim().toLowerCase()));
-        }
         setLogs(Array.isArray(logsData) ? logsData : []);
       } catch(err) {
         const errorObj = err as { response?: { status?: number } };

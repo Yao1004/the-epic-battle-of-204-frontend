@@ -3,7 +3,7 @@ import { useState } from "react";
 import { addDomain } from "@/lib/api";
 import { AxiosErrorShape } from "@/lib/types";
 
-export default function BulkInsertForm({ token }: { token: string }) {
+export default function BulkInsertForm({ token, onUnauthorized }: { token: string, onUnauthorized?: () => void }) {
   const [domains, setDomains] = useState("");
   const [listType, setListType] = useState("blacklist");
   const [result, setResult] = useState<React.ReactNode>("");
@@ -40,6 +40,10 @@ export default function BulkInsertForm({ token }: { token: string }) {
         } else if (code === 422) {
           fail++;
           if (fail === 1) setResult(<span className="text-rose-500">Validation error: {msg}</span>);
+        } else if (code === 401) {
+          if (onUnauthorized) onUnauthorized();
+          setResult(<span className="text-rose-500">Unauthorized. Please log in again.</span>);
+          return;
         } else {
           fail++;
           console.error("Error adding domain:", domain, e);
@@ -74,7 +78,7 @@ export default function BulkInsertForm({ token }: { token: string }) {
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg h-full flex flex-col min-h-[500px]">
       <div className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-5 text-lg font-semibold flex items-center space-x-2">
         <span className="material-symbols-outlined">upload_file</span>
-        <span>Bulk Domain Upload</span>
+        <span>Domain Upload</span>
       </div>
       <form onSubmit={handleSubmit} className="p-5 flex-1 flex flex-col h-full">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center mb-4">
