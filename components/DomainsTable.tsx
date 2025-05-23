@@ -72,12 +72,12 @@ export default function DomainsTable({ token }: { token: string }) {
   return (
     <div>
       <div className="mb-3">{msg && <span className="text-red-500">{msg}</span>}</div>
-      <div className="bg-gray-50 p-4 rounded-lg min-h-[150px]">
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg min-h-[150px]">
         {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left: Whitelist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-gray-600 mb-2 text-lg">Whitelist</div>
+              <div className="font-bold text-gray-600 dark:text-gray-300 mb-2 text-lg">Whitelist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[0]}
@@ -99,7 +99,7 @@ export default function DomainsTable({ token }: { token: string }) {
             </div>
             {/* Right: Blacklist */}
             <div className="flex flex-col h-full">
-              <div className="font-bold text-gray-600 mb-2 text-lg">Blacklist</div>
+              <div className="font-bold text-gray-600 dark:text-gray-300 mb-2 text-lg">Blacklist</div>
               <DomainListSection
                 title="Manual"
                 searchValue={search[1]}
