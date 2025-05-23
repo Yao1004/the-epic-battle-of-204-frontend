@@ -54,7 +54,14 @@ export default function DomainsTable({ token }: { token: string }) {
     setConfirmOpen(false);
     try {
       await deleteDomain(token, pendingDelete.source, pendingDelete.domain, pendingDelete.listType);
-      setMsg(`Deleted: ${pendingDelete.domain} (${pendingDelete.listType})`);
+      // Instead of calling refresh, trigger a custom event to notify DomainListSection to refetch
+      const event = new CustomEvent('domain-list-section-refresh', {
+        detail: {
+          source: pendingDelete.source,
+          listType: pendingDelete.listType
+        }
+      });
+      window.dispatchEvent(event);
     } catch (e) {
       let msg = "";
       if (typeof e === "object" && e && "response" in e) {
