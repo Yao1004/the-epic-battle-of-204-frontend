@@ -46,7 +46,6 @@ export default function BulkInsertForm({ token, onUnauthorized }: { token: strin
           return;
         } else {
           fail++;
-          console.error("Error adding domain:", domain, e);
           if (fail === 1) setResult(<span className="text-rose-500">Internal error: {msg}</span>);
         }
       }

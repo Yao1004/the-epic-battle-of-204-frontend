@@ -33,7 +33,11 @@ export async function addDomain(token: string, domain: string, list_type: string
         validateStatus: () => true, // Always resolve, handle status manually
       }
     );
-    return res;
+    if (res.status >= 200 && res.status < 300) {
+      return res;
+    } else {
+      throw new Error(`Failed to add domain: ${res.status} ${res.statusText}`);
+    }
   } catch (err) {
     throw err;
   }

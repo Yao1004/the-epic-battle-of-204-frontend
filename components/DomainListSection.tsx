@@ -32,8 +32,15 @@ export function DomainListSection({
     try {
       const res = await fetchDomains(token, source, listType, (page - 1) * pageSize, pageSize, searchValue.trim());
       const allDomains = res.domains || [];
-      setMeta(res.meta || { total: 0, offset: 0, limit: 0 });
+      // Make sure meta.total is correctly set, even if the response structure is different than expected
+      const responseMeta = res.meta || {};
+      setMeta({
+        total: responseMeta.total || responseMeta.count || res.count || allDomains.length || 0,
+        offset: responseMeta.offset || (page - 1) * pageSize || 0,
+        limit: responseMeta.limit || pageSize || 5
+      });
       setDomains(allDomains);
+      console.log('API Response:', res); // Debug response structure
     } finally {
       setLoading(false);
     }
@@ -44,6 +51,8 @@ export function DomainListSection({
   }, [fetchPage]);
 
   const pageCount = Math.max(1, Math.ceil(meta.total / pageSize));
+  console.log(`Page ${page} of ${pageCount}, total records: ${meta.total}, 
+    search: "${searchValue}", source: ${source}, listType: ${listType}`);
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
     pages = Array.from({ length: pageCount }, (_, i) => i + 1);
@@ -95,40 +104,42 @@ export function DomainListSection({
 
   return (
     <div className="flex-1 flex flex-col mb-6">
-      <div className="font-semibold text-gray-500 dark:text-gray-300 mb-1">{title}</div>
-      <div className="relative mb-2">
-        <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+      <div className="font-semibold text-gray-500 dark:text-gray-300 mb-1 h-6 flex items-center">{title}</div>
+      <div className="relative mb-2 h-10 flex items-center">
+        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">
           search
         </span>
         <input
           type="text"
-          className="pl-8 pr-2 py-1 border border-gray-300 rounded text-sm focus:border-indigo-500 focus:outline-none w-full"
-          placeholder="Search..."
+          className="w-full h-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:outline-none transition-all duration-200"
+          placeholder="Search domains..."
           value={searchValue}
           onChange={e => setSearchValue(e.target.value)}
         />
       </div>
       {loading ? (
         <div className="text-gray-400 text-sm mb-2">Loading…</div>
-      ) : domains.length === 0 ? (
-        <div className="text-gray-400 text-sm mb-2">No records.</div>
       ) : (
         <>
         <div className="overflow-y-auto max-h-56">
-          <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-            {domains.map((row) => (
-              <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 dark:hover:bg-gray-400 group flex items-center">
-                <span>{row.domain}</span>
-                <button
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity text-base"
-                  title="Delete"
-                  onClick={() => onDelete(source, row.domain, row.list_type)}
-                >
-                  <span className="material-symbols-outlined text-base">close</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          {domains.length === 0 ? (
+            <div className="text-gray-400 text-sm mb-2">No records.</div>
+          ) : (
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              {domains.map((row) => (
+                <li key={row.domain + row.list_type} className="relative py-2 pl-2 pr-8 hover:bg-gray-50 dark:hover:bg-gray-400 group flex items-center">
+                  <span>{row.domain}</span>
+                  <button
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity text-base"
+                    title="Delete"
+                    onClick={() => onDelete(source, row.domain, row.list_type)}
+                  >
+                    <span className="material-symbols-outlined text-base">close</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         {/* Pagination controls styled like the stats panel */}
         <div className="flex justify-center mt-4 gap-2">

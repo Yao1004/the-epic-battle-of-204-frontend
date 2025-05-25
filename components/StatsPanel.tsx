@@ -71,6 +71,7 @@ export default function StatsPanel({ token, onUnauthorized}: { token: string, on
   }, [token, page, search]);
 
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  console.log(`Stats page ${page} of ${pageCount}, total records: ${total}, search: "${search}"`);
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
     pages = Array.from({ length: pageCount }, (_, i) => i + 1);
