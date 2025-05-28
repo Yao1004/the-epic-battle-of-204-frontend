@@ -62,7 +62,6 @@ export default function StatsPanel({ token, onUnauthorized}: { token: string, on
         } else {
           setError("Failed to load stats");
         }
-        console.error(err);
       } finally {
         setLoading(false);
       }

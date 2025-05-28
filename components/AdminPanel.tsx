@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Tabs from "./Tabs";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function AdminPanel({
   setToken,
@@ -9,6 +9,7 @@ export default function AdminPanel({
   token: string;
   setToken: (token: string | null) => void;
 }) {
+  const router = useRouter();
   const pathname = usePathname();
   let activeTab = "view";
   if (pathname === "/update") activeTab = "update";
@@ -31,6 +32,7 @@ export default function AdminPanel({
           onClick={() => {
             setToken(null);
             localStorage.removeItem("token");
+            router.replace("/");
           }}
         >
           <span className="material-symbols-outlined text-sm">logout</span>

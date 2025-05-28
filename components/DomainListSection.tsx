@@ -40,7 +40,6 @@ export function DomainListSection({
         limit: responseMeta.limit || pageSize || 5
       });
       setDomains(allDomains);
-      console.log('API Response:', res); // Debug response structure
     } finally {
       setLoading(false);
     }
@@ -51,8 +50,6 @@ export function DomainListSection({
   }, [fetchPage]);
 
   const pageCount = Math.max(1, Math.ceil(meta.total / pageSize));
-  console.log(`Page ${page} of ${pageCount}, total records: ${meta.total}, 
-    search: "${searchValue}", source: ${source}, listType: ${listType}`);
   let pages: (number | string)[] = [];
   if (pageCount <= 7) {
     pages = Array.from({ length: pageCount }, (_, i) => i + 1);
@@ -111,7 +108,9 @@ export function DomainListSection({
         </span>
         <input
           type="text"
-          className="w-full h-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:outline-none transition-all duration-200"
+          className="w-full h-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm
+          bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:border-indigo-500
+          focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 focus:outline-none transition-all duration-200"
           placeholder="Search domains..."
           value={searchValue}
           onChange={e => setSearchValue(e.target.value)}
@@ -141,7 +140,6 @@ export function DomainListSection({
             </ul>
           )}
         </div>
-        {/* Pagination controls styled like the stats panel */}
         <div className="flex justify-center mt-4 gap-2">
             <button
               className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"

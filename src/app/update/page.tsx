@@ -26,7 +26,7 @@ export default function UpdatePage() {
           onUnauthorized={() => {
             setToken(null);
             localStorage.removeItem("token");
-            router.replace("/login");
+            window.location.replace("/");
           }}
         />
       </div>
