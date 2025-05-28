@@ -22,14 +22,23 @@ export async function login(username: string, password: string) {
 }
 
 export async function fetchDomains(token: string, source: string, list_type: string,
-  offset: number, limit: number, keyword?: string) { 
+  offset: number, limit: number, keyword?: string) {
   const params: Record<string, string | number> = { offset, limit };
   if (keyword && keyword.length > 0) params.keyword = keyword;
-  const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
-    headers: { Authorization: "Bearer " + token },
-    params,
-  });
-  return res.data;
+  try {
+    const res = await axios.get(`${API_BASE}/api/lists/${source}/${list_type}/domains`, {
+      headers: { Authorization: "Bearer " + token },
+      params,
+    });
+    return res.data;
+  } catch (err) {
+    if (typeof window !== 'undefined' && axios.isAxiosError(err) && err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("/");
+      return;
+    }
+    throw err;
+  }
 }
 
 export async function addDomain(token: string, domain: string, list_type: string) {
@@ -42,36 +51,84 @@ export async function addDomain(token: string, domain: string, list_type: string
         validateStatus: () => true, // Always resolve, handle status manually
       }
     );
+    if (res.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("token");
+        window.location.replace("/");
+      }
+      return;
+    }
     if (res.status >= 200 && res.status < 300) {
       return res;
     } else {
       throw new Error(`Failed to add domain: ${res.status} ${res.statusText}`);
     }
   } catch (err) {
+    if (typeof window !== 'undefined' && axios.isAxiosError(err) && err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("/");
+      return;
+    }
     throw err;
   }
 }
 
 export async function deleteDomain(token: string, source: string, domain: string, list_type: string) {
-  await axios.delete(`${API_BASE}/api/lists/${source}/${list_type}/domains/${domain}`, {
-    headers: { Authorization: "Bearer " + token },
-    data: { domain, list_type },
-  });
+  try {
+    const res = await axios.delete(`${API_BASE}/api/lists/${source}/${list_type}/domains/${domain}`, {
+      headers: { Authorization: "Bearer " + token },
+      data: { domain, list_type },
+      validateStatus: () => true,
+    });
+    if (res.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("token");
+        window.location.replace("/");
+      }
+      return;
+    }
+    return res;
+  } catch (err) {
+    if (typeof window !== 'undefined' && axios.isAxiosError(err) && err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("/");
+      return;
+    }
+    throw err;
+  }
 }
 
 export async function fetchDomainLogs(token: string, offset = 0, limit = 100, keyword?: string) {
   const params: Record<string, string | number> = { offset, limit };
   if (keyword && keyword.length > 0) params.keyword = keyword;
-  const res = await axios.get(`${API_BASE}/api/domain-logs`, {
-    headers: { Authorization: "Bearer " + token },
-    params,
-  });
-  return res.data;
+  try {
+    const res = await axios.get(`${API_BASE}/api/domain-logs`, {
+      headers: { Authorization: "Bearer " + token },
+      params,
+    });
+    return res.data;
+  } catch (err) {
+    if (typeof window !== 'undefined' && axios.isAxiosError(err) && err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("/");
+      return;
+    }
+    throw err;
+  }
 }
 
 export async function fetchListStats(token: string) {
-  const res = await axios.get(`${API_BASE}/api/lists/stats`, {
-    headers: { Authorization: "Bearer " + token },
-  });
-  return res.data;
+  try {
+    const res = await axios.get(`${API_BASE}/api/lists/stats`, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    return res.data;
+  } catch (err) {
+    if (typeof window !== 'undefined' && axios.isAxiosError(err) && err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.replace("/");
+      return;
+    }
+    throw err;
+  }
 }
