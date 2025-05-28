@@ -4,15 +4,9 @@ A modern Next.js admin panel for domain management and filtering, designed to he
 
 ## ✨ Features
 
-### 🔐 Authentication
-- Secure admin login with JWT token-based authentication
-- Persistent session management with localStorage
-- Auto-logout on token expiration
-
 ### 📋 Domain Management
 - **View Domain Lists**: Browse and search through whitelist and blacklist domains
-- **Bulk Domain Upload**: Add multiple domains at once via text input or file upload
-- **Individual Domain Management**: Add single domains with real-time validation
+- **Domain Upload**: Add multiple domains at once via text input or file upload
 - **Manual & LLM Sources**: Support for both manually added and LLM-generated domain lists
 - **Search & Pagination**: Fast search with paginated results across all domain lists
 
@@ -33,35 +27,25 @@ A modern Next.js admin panel for domain management and filtering, designed to he
 
 ### Prerequisites
 - Node.js 18+ 
-- npm, yarn, pnpm, or bun
+- npm
 - Backend API server running on port 8000
 
 ### Installation
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone git@github.com:Yao1004/the-epic-battle-of-204-frontend.git
 cd the-epic-battle-of-204-frontend
 ```
 
 2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
 3. Start the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -82,23 +66,6 @@ You can override this by setting the `NEXT_PUBLIC_API_BASE` environment variable
 - **HTTP Client**: Axios for API communication
 - **Icons**: Material Symbols Outlined
 - **Fonts**: Geist Sans & Geist Mono
-
-### Project Structure
-```
-├── src/app/              # Next.js app directory
-│   ├── layout.tsx        # Root layout with metadata
-│   └── page.tsx          # Main application entry
-├── components/           # React components
-│   ├── AdminPanel.tsx    # Main admin interface
-│   ├── LoginPanel.tsx    # Authentication form
-│   ├── DomainsTable.tsx  # Domain list viewer
-│   ├── BulkInsertForm.tsx # Bulk domain upload
-│   ├── StatsPanel.tsx    # Statistics dashboard
-│   └── Tabs.tsx          # Navigation tabs
-└── lib/                  # Utilities and API
-    ├── api.ts            # API client functions
-    └── types.ts          # TypeScript type definitions
-```
 
 ## 🔧 API Integration
 
@@ -128,19 +95,6 @@ The frontend communicates with a REST API backend with the following endpoints:
 - **Delete**: Click the × button next to any domain to remove it
 - **Bulk Add**: Paste multiple domains (one per line) or upload a text file
 - **Validation**: Real-time validation ensures only valid domains are added
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Deploy with automatic builds and previews
-
-### Manual Deployment
-```bash
-npm run build
-npm start
-```
 
 ## 📝 License
 
