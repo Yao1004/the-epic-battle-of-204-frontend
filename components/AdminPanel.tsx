@@ -1,19 +1,19 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import Tabs from "./Tabs";
-import DomainsTable from "./DomainsTable";
-import BulkInsertForm from "./BulkInsertForm";
-import StatsPanel from "./StatsPanel";
+import { usePathname } from "next/navigation";
 
 export default function AdminPanel({
-  token,
   setToken,
 }: {
   token: string;
   setToken: (token: string | null) => void;
 }) {
-  const [tab, setTab] = useState("domains");
+  const pathname = usePathname();
+  let activeTab = "view";
+  if (pathname === "/update") activeTab = "update";
+  else if (pathname === "/stats") activeTab = "stats";
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-md p-4 mb-8 flex justify-between items-center">
@@ -67,14 +67,8 @@ export default function AdminPanel({
             value: "stats",
           },
         ]}
-        active={tab}
-        onChange={setTab}
+        active={activeTab}
       />
-      <div className="my-8">
-        {tab === "view" && <DomainsTable token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }} />}
-        {tab === "update" && <BulkInsertForm token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }}/>}
-        {tab === "stats" && <StatsPanel token={token} onUnauthorized={() => { setToken(null); localStorage.removeItem("token"); }}/>}
-      </div>
     </div>
   );
 }

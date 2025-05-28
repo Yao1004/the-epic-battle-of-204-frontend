@@ -1,22 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
-import LoginPanel from "@/components/LoginPanel";
-import AdminPanel from "@/components/AdminPanel";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const [token, setToken] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
-
-  return (
-    <div>
-      {token ? (
-        <AdminPanel token={token} setToken={setToken} />
-      ) : (
-        <LoginPanel setToken={setToken} />
-      )}
-    </div>
-  );
+    const t = localStorage.getItem("token");
+    if (!t) {
+      sessionStorage.setItem("redirectAfterLogin", "/");
+      router.replace("/login");
+    } else {
+      router.replace("/view");
+    }
+  }, [router]);
+  return null;
 }
