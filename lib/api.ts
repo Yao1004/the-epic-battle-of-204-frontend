@@ -1,5 +1,14 @@
 import axios from "axios";
-const API_BASE = "http://localhost:8000";
+
+export function getApiBase() {
+  if (typeof window === 'undefined') {
+    // SSR fallback, use env or hardcoded
+    return process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+  }
+  return `${window.location.protocol}//${window.location.hostname}:8000`;
+}
+
+const API_BASE = getApiBase();;
 
 export async function login(username: string, password: string) {
   const params = new URLSearchParams();
